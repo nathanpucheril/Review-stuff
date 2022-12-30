@@ -2,12 +2,24 @@ from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text, JSON
 from sqlalchemy.orm import relationship, declarative_base
 from sqlalchemy.sql import func
 
+from sqlalchemy.inspection import inspect
+
 import enum
 
 Base = declarative_base()
 
+class ModelMixin:
+    """Provide dict-like interface to db.Model subclasses."""
 
-class User(Base):
+    def __getitem__(self, key):
+        """Expose object attributes like dict values."""
+        return getattr(self, key)
+
+    def keys(self):
+        """Identify what db columns we have."""
+        return inspect(self).attrs.keys()
+
+class User(Base, ModelMixin):
     """User account."""
 
     __tablename__ = "user"
@@ -26,7 +38,7 @@ class User(Base):
         return f"<User {self.username}>"
 
 
-class Account(Base):
+class Account(Base, ModelMixin):
     """Account."""
 
     __tablename__ = "account"
@@ -37,13 +49,11 @@ class Account(Base):
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
 
-    admin_user = relationship("User", backref="admin_user")
-
     def __repr__(self):
         return f"<Account {self.name}>"
 
 
-class Project(Base):
+class Project(Base, ModelMixin):
     """Project."""
 
     __tablename__ = "project"
@@ -53,6 +63,7 @@ class Project(Base):
     description = Column(Text)
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
+    account_id = Column(Integer, ForeignKey("account.id"))
 
     account = relationship("Account", backref="account")
 
@@ -66,7 +77,7 @@ class ReviewTypeEnum(enum.Enum):
     stars = 3
 
 
-class Review(Base):
+class Review(Base, ModelMixin):
     """Review."""
 
     __tablename__ = "review"
@@ -82,14 +93,3 @@ class Review(Base):
 
     def __repr__(self):
         return f"<Review {self.name}>"
-
-
-# def init_db(engine):
-#     db_session = scoped_session(sessionmaker(autocommit=False,
-#                                              autoflush=False,
-#                                              bind=engine))
-#     Base.query = db_session.query_property()
-#     # import all modules here that might define models so that
-#     # they will be registered properly on the metadata.  Otherwise
-#     # you will have to import them first before calling init_db()
-#     Base.metadata.create_all(bind=engine)

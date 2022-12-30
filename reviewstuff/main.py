@@ -4,14 +4,20 @@ import os
 
 from reviewstuff import routes
 from reviewstuff.config.config import Config
+from flask.json import JSONEncoder
+from contextlib import suppress
+
+class MyJSONEncoder(JSONEncoder):
+    def default(self, obj):
+        # Optional: convert datetime objects to ISO format
+        with suppress(AttributeError):
+            return obj.isoformat()
+        return dict(obj)
 
 
 def create_app():
     basedir = os.path.abspath(os.path.dirname(__file__))
     cfg = Config(basedir)
-
-    print("secrets:")
-    print(os.getenv("POSTGRES_PASSWORD"))
 
     # create the app
     flask_app = Flask(__name__, instance_relative_config=False)
@@ -24,6 +30,7 @@ def create_app():
 
     routes.routes(flask_app, db)
 
+    flask_app.json_encoder = MyJSONEncoder
     flask_app.db = db
     return flask_app
 

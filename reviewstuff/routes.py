@@ -26,22 +26,13 @@ def routes(app: flask_app, db: SQLAlchemy):
 
     @app.get('/user/v1/get_by_id/<id>')
     def user_get_by_id(id):
-        print(id)
-
-        res = db.session.query(User).filter(User.id == id).all()
-        for r in res:
-            print(r)
-
-        return jsonify({})
+        user = db.session.query(User).filter(User.id == id).one()
+        return jsonify(dict(user))
 
     @app.get('/user/v1/get_by_email/<email>')
     def user_get_by_email(email):
-
-        res = db.session.query(User).filter(User.email == email).all()
-        for r in res:
-            print(r)
-
-        return jsonify({})
+        user = db.session.query(User).filter(User.email == email).one()
+        return jsonify(dict(user))
 
     @app.post('/review/v1/create')
     def review_create():
