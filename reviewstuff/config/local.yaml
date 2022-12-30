@@ -1,0 +1,5 @@
+database:
+  main:
+    type: sqlite
+    path_ext: /database/main.db
+

@@ -8,7 +8,7 @@ def routes(app: flask_app, db: SQLAlchemy):
 
     @app.route('/health')
     def health():
-        return jsonify({"result":"healthy"})
+        return jsonify({"result": "healthy"})
 
     @app.route('/init')
     def init():

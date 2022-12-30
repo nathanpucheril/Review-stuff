@@ -1,0 +1,10 @@
+database:
+  main:
+    type: postgres
+    host: dpg-cemm1v9gp3jlcshhbpk0-a
+    port: 5432
+    database: pgdb_uv75
+    username: pgdb_uv75_user
+    password: POSTGRES_PASSWORD
+
+
