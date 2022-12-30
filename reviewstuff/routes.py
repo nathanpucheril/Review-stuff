@@ -12,7 +12,7 @@ def routes(app: flask_app, db: SQLAlchemy):
 
     @app.route('/init')
     def init():
-        db.create_all(Base)
+        Base.metadata.create_all(db.engine)
         db.session.commit()
         return jsonify({})
 

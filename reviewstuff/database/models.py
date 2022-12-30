@@ -1,7 +1,5 @@
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, Text, JSON, Enum
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
-from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text, JSON, Enum
+from sqlalchemy.orm import relationship, declarative_base
 from sqlalchemy.sql import func
 
 import enum

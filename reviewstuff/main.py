@@ -3,28 +3,29 @@ from flask_sqlalchemy import SQLAlchemy
 
 from reviewstuff import routes
 import os
-
-
-# create the extension
-db = SQLAlchemy()
+from reviewstuff.config.config import Config
 
 
 def create_app():
     basedir = os.path.abspath(os.path.dirname(__file__))
 
+    cfg = Config(basedir)
+
+
     # create the app
-    app = Flask(__name__, instance_relative_config=False)
+    flask_app = Flask(__name__, instance_relative_config=False)
 
     # configure the SQLite database, relative to the app instance folder
-    app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///' + os.path.join(basedir, '../database/app.db')
+    flask_app.config["SQLALCHEMY_DATABASE_URI"] = cfg.SQLALCHEMY_DATABASE_URI
 
-    db.init_app(app)
+    # create the extension
+    db = SQLAlchemy(flask_app)
 
-    routes.routes(app, db)
+    routes.routes(flask_app, db)
 
-    app.db = db
+    flask_app.db = db
 
-    return app
+    return flask_app
 
 
 if __name__ == '__main__':
