@@ -1,17 +1,17 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from dotenv import load_dotenv
 import os
 
 from reviewstuff import routes
 from reviewstuff.config.config import Config
 
-load_dotenv()
-
 
 def create_app():
     basedir = os.path.abspath(os.path.dirname(__file__))
     cfg = Config(basedir)
+
+    print("secrets:")
+    print(os.getenv("POSTGRES_PASSWORD"))
 
     # create the app
     flask_app = Flask(__name__, instance_relative_config=False)

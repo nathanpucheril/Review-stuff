@@ -16,5 +16,5 @@ build/
 
 .DS_Store
 *.db
-.env
-.secrets_env
+*.env
+*.secrets_env

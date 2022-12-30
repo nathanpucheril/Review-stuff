@@ -1,5 +1,7 @@
+secrets:
+  env_file_path: .secrets_env
 database:
   main:
     type: sqlite
-    path_ext: /database/main.db
+    path_ext: database/main.db
 

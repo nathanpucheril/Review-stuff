@@ -1,3 +1,5 @@
+secrets:
+  env_file_path: /etc/secrets/.secrets_env
 database:
   main:
     type: postgres
