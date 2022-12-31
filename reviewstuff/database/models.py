@@ -63,7 +63,7 @@ class Project(Base, ModelMixin):
     description = Column(Text)
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
-    account_id = Column(Integer, ForeignKey("account.id"))
+    account_id = Column(Integer, ForeignKey("account.id"), nullable=False)
 
     account = relationship("Account", backref="account")
 
