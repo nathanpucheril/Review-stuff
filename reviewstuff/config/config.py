@@ -25,6 +25,7 @@ class Config(object):
             config_yaml = yaml.safe_load(file)
 
         secrets_path = f"{os.path.join(self.basedir, config_yaml['secrets']['env_file_path'])}"
+        load_dotenv(secrets_path)
 
         # Since SQLAlchemy 1.4.x has removed support for the 'postgres://' URI scheme,
         # update the URI to the postgres database to use the supported 'postgresql://' scheme

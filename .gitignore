@@ -18,3 +18,4 @@ build/
 *.db
 *.env
 *.secrets_env
+pyvenv.cfg

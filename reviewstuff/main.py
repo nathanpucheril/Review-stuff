@@ -6,6 +6,7 @@ from reviewstuff import routes
 from reviewstuff.config.config import Config
 from flask.json import JSONEncoder
 from contextlib import suppress
+from flask_cors import CORS
 
 class MyJSONEncoder(JSONEncoder):
     def default(self, obj):
@@ -21,6 +22,7 @@ def create_app():
 
     # create the app
     flask_app = Flask(__name__, instance_relative_config=False)
+    cors = CORS(flask_app, resources='/review/v1/create')
 
     # configure the SQLite database, relative to the app instance folder
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = cfg.SQLALCHEMY_DATABASE_URI

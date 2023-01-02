@@ -1,5 +1,7 @@
 from flask import request, jsonify, app as flask_app
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.inspection import inspect
+from sqlalchemy.orm import class_mapper
 
 from reviewstuff.database.models import Base, User, Account, Project, Review
 
@@ -19,7 +21,7 @@ def routes(app: flask_app, db: SQLAlchemy):
     def generic_model_create(model_type):
         model_ref = get_model_ref_from_type_str(model_type)
         content = request.json
-        db.session.add(model_ref(**content))
+        db.session.add(model_ref(**__sqlalchemy_model_from_json(model_ref, content)))
         db.session.commit()
         return jsonify({"result": "success"})
 
@@ -49,4 +51,11 @@ def routes(app: flask_app, db: SQLAlchemy):
         elif model_type == "review":
             return  Review
         raise Exception("unknown model type to get")
+
+    def __sqlalchemy_model_from_json(model, data):
+        mapper = class_mapper(model)
+        keys = mapper.attrs.keys()
+        relationships = inspect(mapper).relationships
+        return {k: v for k, v in data.items()
+                if k in keys and k not in relationships}
 
