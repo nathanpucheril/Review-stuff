@@ -17,6 +17,16 @@ def routes(app: flask_app, db: SQLAlchemy):
         db.session.commit()
         return jsonify({})
 
+    @app.route('/drop_all')
+    def drop():
+        User.__table__.drop()
+        Review.__table__.drop()
+        Project.__table__.drop()
+        Account.__table__.drop()
+
+        return jsonify({})
+
+
     @app.post('/<model_type>/v1/create')
     def generic_model_create(model_type):
         model_ref = get_model_ref_from_type_str(model_type)
