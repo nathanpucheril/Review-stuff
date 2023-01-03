@@ -65,7 +65,7 @@ class Project(Base, ModelMixin):
     updated_at = Column(DateTime, onupdate=func.now())
     account_id = Column(Integer, ForeignKey("account.id"), nullable=False)
 
-    account = relationship("Account", backref="account")
+    # account = relationship("Account", backref="account")
 
     def __repr__(self):
         return f"<Project {self.name}>"
@@ -89,7 +89,7 @@ class Review(Base, ModelMixin):
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
 
-    project = relationship("Project", backref="project")
+    # project = relationship("Project", backref="project")
 
     def __repr__(self):
-        return f"<Review {self.name}>"
+        return f"<Review {self.id}>"
